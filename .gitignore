@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.env
+.env.local
+.env.*.local
+.firecrawl/
+.sites-runtime/
+docs/reference/*.png
+docs/reference/ceod-analysis.json
+docs/qa/
+*.log

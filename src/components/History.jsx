@@ -1,0 +1,3 @@
+import { Label,Button,Reveal } from './Shared';
+import { safeUrl } from '../lib/safe';
+export default function History({data,onMore}){return <section id="historia" className="history"><img src={safeUrl(data.image)} alt="Ethel T. Wead Mick, fundadora das Filhas de Jó" loading="lazy"/><div className="history-shade"/><Reveal className="history-copy"><Label>Nossa história</Label><h2>{data.title}</h2><p>{data.text}</p><Button outline onClick={onMore}>Conheça nossa história</Button></Reveal><div className="history-words" aria-hidden="true">Lealdade<br/>Pureza<br/>Amizade<br/>Serviço</div><span className="founder-sign script" aria-hidden="true">Ethel T. Wead Mick</span></section>}
