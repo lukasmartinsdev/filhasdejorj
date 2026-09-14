@@ -22,3 +22,14 @@ Os arquivos foram otimizados para WebP sem alteração da composição. A identi
 ## Verificação
 
 Capturas completas do site e relatório em `docs/qa/` (não enviados à hospedagem). Sete larguras sem overflow ou imagens ausentes. Menu mobile, navegação por âncoras, galeria ampliada, teclado/Escape, validação de formulário, política de privacidade e bloqueio do painel sem autenticação verificados.
+# Página de história no Brasil e no Rio
+
+Conteúdo pesquisado em 14/09/2026, escrito em paráfrase e com referências visíveis na página `/historia`:
+
+- [JDI — Our Founder](https://jobsdaughtersinternational.org/our-founder/): fundação internacional por Ethel T. Wead Mick em 20/10/1920, Omaha.
+- [JDI — Livro de Cerimônias, p. D-54 (PDF p. 93)](https://jobsdaughtersinternational.org/wp-content/uploads/2021/11/Book-of-Ceremonies-Complete-PT-2021.pdf#page=93): utilizado somente o dado histórico da instituição brasileira em 13/03/1993, Rio de Janeiro. A página não reproduz cerimônias.
+- [ALESP — sessão de 2014](https://www.al.sp.gov.br/repositorio/ementario/anexos/20140331-173441-ID_SESSAO%3D11269.htm): depoimento sobre Alberto Mansur e a participação do Bethel 1 do Rio na instalação do Bethel 1 paulista em 19/12/1998.
+- [BlogFDJBRASIL — 25 anos](https://fdjbrasil.blogspot.com/2018/03/25-anos-de-filhas-de-jo-brasil.html): registro comunitário do Bethel 001 Mater da América Latina e Hotel Glória.
+- [Maria Alice Jarcem — Bethel Susie Holmes](https://fdjbrasil.blogspot.com/2012/03/bethel-susie-holmes.html): memória atribuída à Past Honorável Rainha, publicada em 2012, com fundação em 15/06/1997 e mudança de nome/sede em 2001.
+
+Os dois Bethels são registros históricos verificados nas fontes acima, não uma listagem exaustiva nem uma confirmação de funcionamento atual. Textos, fontes, marcos e novos Bethels são editáveis no painel Nossa história. Foi preservado o GIF original com transparência para exibir o retrato integral sem fundo preto.

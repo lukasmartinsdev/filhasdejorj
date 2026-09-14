@@ -1,0 +1,42 @@
+.history-page{--reading:680px}
+.history-page-hero{padding:125px 0 54px;background:linear-gradient(90deg,#211126f5 15%,#211126aa 65%,#21112660),url('/assets/rio-panorama.webp') center 52%/cover;color:white;border-bottom:3px solid var(--gold)}
+.back-home{display:inline-flex;align-items:center;gap:9px;font-size:12px;color:#e0d3e5;margin-bottom:38px}
+.history-page-hero .eyebrow,.history-brazil .eyebrow{color:#e6c97f}
+.history-page-hero h1{font-size:clamp(40px,5vw,76px);white-space:pre-line;max-width:900px;font-weight:500}
+.history-page-hero>.wrap>p:not(.eyebrow){font-size:16px;max-width:580px;margin:20px 0 28px;color:#eee4ef}
+.history-page-hero nav{display:flex;flex-wrap:wrap;gap:12px}
+.history-page-hero nav a{padding:9px 16px;font-size:12px;border:1px solid #ffffff50;border-radius:99px}
+.history-page-hero nav a:hover{background:#ffffff18}
+.history-origin{display:grid;grid-template-columns:minmax(180px,.75fr) minmax(0,1.5fr);gap:clamp(28px,7vw,110px);align-items:center;padding-block:70px;max-width:1120px}
+.founder-portrait{margin:0;padding:23px;background:radial-gradient(ellipse,#e9dfcc,#f8f6f3 70%);text-align:center}
+.founder-portrait img{width:100%;height:auto;max-height:350px;object-fit:contain}
+.founder-portrait figcaption{margin-top:18px}.founder-portrait .script{font-size:38px;display:block}
+.founder-portrait small{display:block;font-size:10px;letter-spacing:1px;margin-top:7px;text-transform:uppercase;color:#705e77}
+.history-prose{max-width:var(--reading)}.history-prose h2{font-size:clamp(34px,3vw,48px);margin-bottom:22px}
+.history-prose>p:not(.eyebrow){font-size:15px;line-height:1.8;margin:14px 0}
+.history-source{display:inline-flex;align-items:center;gap:6px;font-size:11px;line-height:1.5;text-decoration:underline;text-underline-offset:4px;color:var(--purple);margin-top:12px;overflow-wrap:anywhere}
+.history-source svg{align-self:flex-start;margin-top:2px}
+.history-brazil{color:white;background:linear-gradient(90deg,#211126f5 20%,#211126d0 60%,#211126a0),url('/assets/rio-panorama.webp') center/cover;border-block:1px solid #c6a857}
+.history-brazil-inner{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(200px,1fr);gap:70px;align-items:center;padding-block:64px;max-width:1200px}
+.history-brazil .history-source{color:#eed89d}.history-sources{display:flex;flex-wrap:wrap;gap:8px 25px}
+.history-brazil-symbol{display:grid;justify-items:center;text-align:center}.history-brazil-symbol img{width:210px;filter:drop-shadow(0 8px 25px #0006)}
+.history-brazil-symbol .script{font-size:48px;margin-top:24px;color:#e5c785;transform:rotate(-6deg)}
+.history-milestones{padding-block:66px}.history-milestones h2{font-size:clamp(32px,3vw,44px)}
+.history-milestones ol{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));list-style:none;padding:0;margin:36px 0 0;gap:30px}
+.history-milestones li{border-top:2px solid #d4af3770;padding-top:22px;position:relative}
+.history-milestones li:before{content:'';position:absolute;width:9px;height:9px;background:var(--gold);border-radius:50%;top:-6px;left:0}
+.milestone-date{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--purple);font-weight:600}
+.history-milestones h3{font-size:27px;margin:14px 0 11px}.history-milestones li>p{font-size:13px;line-height:1.7}
+.history-bethels{background:#eee9ef;padding:60px 0}.bethel-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin-top:32px}
+.bethel-card{position:relative;background:var(--paper);border:1px solid #e0d4e3;border-radius:9px;padding:32px;min-width:0}
+.bethel-number{font-family:'Cormorant Garamond',Georgia,serif;font-size:39px;color:#9e80ac}
+.bethel-card h3{font-size:32px;margin:15px 0 20px;max-width:430px}
+.bethel-facts{display:flex;flex-direction:column;gap:7px;color:var(--purple);margin-bottom:18px}
+.bethel-facts p{display:flex;gap:9px;align-items:flex-start;font-size:12px}.bethel-facts svg{margin-top:1px}
+.bethel-card>p{font-size:14px;line-height:1.75}.history-note{font-size:12px;line-height:1.7;color:#705e77;max-width:790px;margin-top:26px}
+.history-contribute{display:flex;gap:25px;align-items:center;padding-block:45px}.history-contribute>svg{color:#ac8037}.history-contribute>div{flex:1}
+.history-contribute h2{font-size:33px}.history-contribute p:not(.eyebrow){font-size:13px;margin-top:10px}.history-contribute .eyebrow{font-size:9px}
+.history-page section[id]{scroll-margin-top:20px}
+@media(max-width:850px){.history-milestones ol{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:35px}.history-origin{gap:30px}.history-brazil-inner{gap:30px}.history-brazil-symbol img{width:165px}.history-contribute{flex-wrap:wrap}.history-contribute .button{margin-left:61px}.bethel-card{padding:25px}}
+@media(max-width:600px){.history-page-hero{padding-top:110px;padding-bottom:36px}.back-home{margin-bottom:28px}.history-page-hero h1{font-size:42px}.history-page-hero>.wrap>p:not(.eyebrow){font-size:14px}.history-page-hero nav{gap:8px}.history-page-hero nav a{font-size:11px;padding:9px 12px}.history-origin{grid-template-columns:1fr;padding-block:40px;gap:30px}.founder-portrait{width:235px;max-width:100%;margin:auto;padding:0}.founder-portrait img{max-height:265px}.history-prose>p:not(.eyebrow){font-size:14px}.history-brazil-inner{grid-template-columns:1fr;padding-block:40px}.history-brazil-symbol{display:none}.history-milestones{padding-block:42px}.history-milestones ol{gap:28px 22px}.history-milestones h3{font-size:25px}.history-milestones li>p{font-size:12px}.bethel-grid{grid-template-columns:1fr}.history-bethels{padding:40px 0}.bethel-card h3{font-size:30px}.history-contribute{gap:18px}.history-contribute>svg{display:none}.history-contribute>div{flex-basis:100%}.history-contribute .button{margin:0}.history-contribute h2{font-size:31px}}
+@media(max-width:360px){.history-milestones ol{grid-template-columns:1fr}.history-page-hero h1{font-size:38px}}
