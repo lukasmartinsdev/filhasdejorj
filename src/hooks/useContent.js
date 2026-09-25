@@ -1,16 +1,8 @@
 import { useEffect,useState } from 'react';
 import { defaults } from '../data/defaults';
-import { supabase } from '../lib/supabase';
+import { apiRequest, adminApi } from '../lib/api';
 export async function loadContent(admin=false){
-  if(!supabase)return defaults;
-  const entries=await Promise.all(Object.keys(defaults).map(async table=>{
-    let query=supabase.from(table).select('*').order('sort_order');
-    if(!admin)query=query.eq('active',true);
-    const {data,error}=await query;
-    if(error)throw new Error('Não foi possível carregar o conteúdo. Tente novamente.');
-    return [table,data];
-  }));
-  return Object.fromEntries(entries);
+  return admin ? adminApi('/content') : apiRequest('/content');
 }
 export function useContent(){
  const [content,setContent]=useState(defaults);

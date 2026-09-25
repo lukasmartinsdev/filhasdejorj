@@ -1,25 +1,57 @@
 # Filhas de Jó RJ
 
-Projeto único em React + Vite + JavaScript. Backend no Supabase existente `godvzqqmsrkyvlflmadd`, renomeado para `filhasdejorj`.
+Site institucional e projeto acadêmico do grupo Victor, Flávio e Lukas, com React, API Node.js, ViaCEP e painel administrativo.
+
+- Site: https://promoinfo.vercel.app
+- GitHub: https://github.com/lukasmartinsdev/filhasdejorj
+- [Requisitos e roteiro de conferência](docs/REQUISITOS.md)
+- [Como trabalhar em grupo no GitHub](CONTRIBUTING.md)
+- [API e autenticação](docs/API.md)
+
+## Arquitetura
+
+React 19, Vite e JavaScript no frontend; API própria em Node.js; Supabase para PostgreSQL, autenticação e imagens; Vercel para hospedagem. O plano da Vercel foi confirmado como **Hobby** em 25/09/2026.
+
+```text
+Navegador React → /api/* (Node.js local ou Vercel Function) → Supabase com RLS
+Formulário de cadastro → /api/cep/:cep → ViaCEP
+Login e upload de imagens → Supabase Auth / Storage
+```
+
+O mesmo backend funciona localmente e na Vercel. O banco e o ViaCEP precisam de internet. A URL e a chave `sb_publishable_` dos arquivos de exemplo são públicas por design; não concedem acesso administrativo. Senhas e tokens administrativos não fazem parte do código.
 
 ## Executar
 
-Use Node 22+; `npm install`, copie `.env.example` para `.env` e execute `npm run dev`. `npm run build` gera `dist/`. O host precisa redirecionar rotas desconhecidas para `index.html` para suportar `/admin`.
+Use Node.js 22 ou superior. Execute `npm ci`, copie `.env.example` para `.env` e execute `npm run dev`. O site e a API abrem em `http://127.0.0.1:5173`.
 
-## Conteúdo e administração
+Para executar apenas o backend, use `npm run dev:api`: `http://127.0.0.1:3001`. Consulte os exemplos em [API.md](docs/API.md).
 
-`/admin` usa Supabase Auth. Autenticação não implica autorização: o usuário deve ter registro ativo em `admin_profiles`. A tabela de administradores não pode ser alterada por clientes. Nunca incluir service_role no frontend.
+- `npm test`: testes Node, sem senha ou acesso ao banco de produção.
+- `npm run build`: compilação do frontend.
+- O GitHub Actions executa ambos em pushes e pull requests.
 
-O CMS permite editar identidade/logo, hero, apresentação, história e linha do tempo, evento, valores, programação, convidados, galeria, apoiadores, FAQ, contato, links, inscrições e lotes. As seções podem ser ocultadas e reordenadas. Uploads de até 8 MB para `site-assets` aceitam PNG, JPG, WebP e GIF e exigem administrador. Formulários de contato e interesse salvam registros privados; não enviam e-mails automaticamente. Vídeo e canais sociais aguardam os dados oficiais.
+## Páginas e administração
 
-As migrações estão em `supabase/migrations/`. Não reaplicar a migração inicial num projeto que já tenha o CMS. Os dados antigos da Promoinfo e suas permissões foram preservados; nenhuma tabela foi excluída.
+Páginas públicas: `/`, `/historia`, `/evento`, `/inscricao`, `/acompanhamento` e `/conta`, acessíveis pelo menu ou links do site.
 
-## Ingressos
+O painel fica em `/admin`, sem links públicos, e exige login mais um perfil administrativo ativo. Permite inserir, consultar, atualizar e excluir conteúdo pela API própria; também reorganiza seções e consulta mensagens. Edições usam controle de versão para evitar sobrescrever alterações de outra pessoa. Seções únicas possuem edição; listas como FAQ, galeria e apoiadores têm CRUD completo.
 
-`registration_settings` e `registration_lots` reservam valor, vagas, prazo e link externo. Não há checkout ou gateway de pagamentos nesta etapa, conforme solicitado. Para a próxima fase, criar pedidos e ingressos com emissão no backend, webhooks autenticados e validação de pagamento; valores nunca devem ser confiados ao cliente.
+`/admin/reservas` exige a mesma autorização real, embora os pedidos e pagamentos continuem demonstrativos. A senha é definida fora do repositório. Não mostre senhas, tokens ou dados de contato de terceiros durante a apresentação.
 
-## Segurança e validação
+## Inscrições demonstrativas
 
-RLS em todas as tabelas novas. Conteúdo ativo pode ser lido publicamente. Escrita de conteúdo e uploads são permitidos somente a um perfil administrativo ativo. `private.is_admin` usa SECURITY INVOKER e consulta exclusivamente o perfil do usuário. Os dois RPCs públicos de formulários usam SECURITY DEFINER intencionalmente para oferecer inserção validada sem expor leitura de dados pessoais. Fixam search_path, validam consentimento e tamanho, impedem duplicação de interesse e aplicam intervalo por e-mail ao contato. Os avisos do advisor sobre esses dois RPCs são esperados pelo desenho de escrita pública controlada: https://supabase.com/docs/guides/database/database-linter?lint=0028_anon_security_definer_function_executable .
+Cadastro, acomodações, preços, pagamentos Pix/boleto/cartão, reservas e estornos são simulações. Não há cobrança, ingresso, reserva ou envio de e-mail real. O formulário usa ViaCEP para preencher rua, bairro, cidade e UF, mantendo número e complemento editáveis.
 
-Verificações visuais e funcionais registradas em `docs/qa/report.json`; fontes e origem das imagens em `docs/REFERENCIAS.md`. Chaves `sb_publishable_` são públicas por design; a proteção dos dados é feita por RLS.
+CPF, contato, endereço, informações de saúde e responsáveis existem apenas em memória e são descartados ao concluir a simulação. A aba guarda somente resumos demonstrativos; veja [INSCRICOES.md](docs/INSCRICOES.md). Cobranças reais exigem backend de pedidos, validação de preços, gateway e webhooks; não basta inserir uma chave no frontend.
+
+## Publicação
+
+O projeto Vercel vinculado é `promoinfo`. Configure `VITE_SUPABASE_URL` e `VITE_SUPABASE_PUBLISHABLE_KEY` em Production e Preview usando os valores públicos de `.env.example`. Na raiz, execute `npx vercel deploy --prod`.
+
+**Publique o frontend e a API juntos, não apenas `dist/`.** `api/[...path].js` reutiliza `server/app.js`; `vercel.json` preserva as rotas de API antes do fallback React. O vínculo local `.vercel/` fica fora do Git.
+
+## Conteúdo e dados
+
+O CMS usa o Supabase `godvzqqmsrkyvlflmadd`. As tabelas legadas foram preservadas. As migrações ficam em `supabase/migrations`; não reaplique a migração inicial em banco já configurado. As tabelas novas têm RLS, e uploads no bucket público `site-assets` exigem administrador. Formulários de contato e interesse salvam registros privados pelos RPCs existentes.
+
+A identidade visual utiliza a logo fornecida e tons de roxo, branco e dourado. Imagens ilustrativas não são registros de eventos reais. Fontes históricas e referências: [REFERENCIAS.md](docs/REFERENCIAS.md). Informações do evento ainda sujeitas à confirmação são identificadas no site.

@@ -1,0 +1,20 @@
+.sponsors-refined{background:#f8f6f3;border-top:1px solid #e7ded2;border-bottom:2px solid #cba948}
+.sponsors-refined-inner{padding-block:30px;display:grid;grid-template-columns:minmax(0,1fr);gap:26px;align-items:center}
+.sponsors-heading{text-align:center}.sponsors-heading .eyebrow{font-size:9px;letter-spacing:2.4px}.sponsors-heading h2{font-size:35px}.sponsors-heading>p:not(.eyebrow){font-size:12px;line-height:1.7;color:#806e86;margin:10px auto 0;max-width:420px}
+.sponsors-groups{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:20px 24px;align-items:stretch;width:100%;max-width:1100px;margin-inline:auto}
+.sponsor-group{grid-column:span 6;min-width:0;text-align:center}
+.sponsor-group[data-category="Realização"]{grid-column:1/span 6;grid-row:1}
+.sponsor-group[data-category="Corpos Filosóficos"]{grid-column:7/-1;grid-row:1}
+.sponsor-group[data-category="Potências Simbólicas"]{grid-column:1/span 6;grid-row:2}
+.sponsor-group[data-category="Outros apoiadores"]{grid-column:7/-1;grid-row:2}
+.sponsor-group h3{font:600 9px Inter,sans-serif;letter-spacing:1.3px;text-transform:uppercase;color:#826b8b;padding-bottom:10px;margin:0 0 9px;border-bottom:1px solid #dfd5e0;line-height:1.4}
+.sponsor-logos{display:flex;align-items:center;justify-content:center;gap:14px;min-height:78px}
+.sponsor-tile{display:block;flex:0 1 86px;min-width:0;max-width:100%}
+.sponsor-logo-shell{height:78px;width:100%;display:flex;align-items:center;justify-content:center;padding:4px;background:#f8f6f3;isolation:isolate}
+.sponsor-logo-shell img{width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply}
+.sponsor-logo-shell img.round-sponsor-logo{border-radius:50%;max-width:70px;max-height:70px}
+.sponsor-group-featured .sponsor-tile{flex-basis:110px}.sponsor-group-featured .sponsor-logo-shell{height:82px}
+.sponsor-wordmark{font:700 21px Inter,sans-serif;line-height:1.1;color:#31203d;text-align:center;letter-spacing:-.7px;overflow-wrap:anywhere}
+.sponsor-tile:focus-visible{outline:2px solid #9467af;outline-offset:4px;border-radius:5px}
+@media(max-width:1100px){.sponsors-heading h2{font-size:32px}.sponsors-groups{gap:18px 22px}}
+@media(max-width:650px){.sponsors-refined-inner{padding-block:26px;gap:23px}.sponsors-heading{display:block;text-align:center}.sponsors-heading .eyebrow{display:block}.sponsors-heading h2{font-size:31px}.sponsors-heading>p:not(.eyebrow){margin:10px auto 0;max-width:280px}.sponsors-groups{gap:18px 12px}.sponsor-group[data-category="Realização"]{grid-column:1/span 3}.sponsor-group[data-category="Corpos Filosóficos"]{grid-column:4/-1}.sponsor-group h3{font-size:7px;letter-spacing:.6px;padding-bottom:8px;min-height:29px;margin-bottom:6px;display:flex;align-items:center;justify-content:center}.sponsor-logos{gap:5px;min-height:59px}.sponsor-tile{flex:0 1 65px}.sponsor-logo-shell{height:59px;padding:2px}.sponsor-group-featured .sponsor-logo-shell{height:61px}.sponsor-logo-shell img.round-sponsor-logo{max-height:53px}.sponsor-wordmark{font-size:16px}}
