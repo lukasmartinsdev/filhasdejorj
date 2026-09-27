@@ -1,6 +1,6 @@
 # API do projeto
 
-A API própria é implementada em Node.js em `server/app.js`. O mesmo código atende localmente e em uma Vercel Function (`api/[...path].js`). O banco e a autenticação usam o Supabase; é necessário acesso à internet para essas integrações e para o ViaCEP. “API local” significa que o processo HTTP roda no computador, não que o banco inteiro funcione offline.
+A API própria é implementada em Node.js em `server/app.js`. O mesmo código atende localmente e em uma Vercel Function (`api/handler.js`), com encaminhamento explícito de `/api/:path*` no `vercel.json`. O banco e a autenticação usam o Supabase; é necessário acesso à internet para essas integrações e para o ViaCEP. “API local” significa que o processo HTTP roda no computador, não que o banco inteiro funcione offline.
 
 ## Executar
 

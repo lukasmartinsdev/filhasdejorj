@@ -48,7 +48,7 @@ CPF, contato, endereço, informações de saúde e responsáveis existem apenas 
 
 O projeto Vercel vinculado é `promoinfo`. Configure `VITE_SUPABASE_URL` e `VITE_SUPABASE_PUBLISHABLE_KEY` em Production e Preview usando os valores públicos de `.env.example`. Na raiz, execute `npx vercel deploy --prod`.
 
-**Publique o frontend e a API juntos, não apenas `dist/`.** `api/[...path].js` reutiliza `server/app.js`; `vercel.json` preserva as rotas de API antes do fallback React. O vínculo local `.vercel/` fica fora do Git.
+**Publique o frontend e a API juntos, não apenas `dist/`.** `api/handler.js` reutiliza `server/app.js`; `vercel.json` encaminha `/api/:path*` explicitamente para essa função antes do fallback React. O vínculo local `.vercel/` fica fora do Git.
 
 ## Conteúdo e dados
 
