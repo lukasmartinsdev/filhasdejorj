@@ -55,7 +55,7 @@ const base = process.env.QA_BASE_URL || 'http://127.0.0.1:5173';
     await page.getByRole('dialog').getByRole('button', { name: 'Excluir item', exact: true }).click();
     await row.waitFor({ state: 'detached' });
     await page.getByRole('button', { name: 'Sair', exact: true }).click();
-    await page.getByRole('heading', { name: 'Bem-vinda ao painel', exact: true }).waitFor();
+    await page.getByRole('heading', { name: 'Entrar no painel', exact: true }).waitFor();
     assert.deepEqual(errors, []);
     console.log(JSON.stringify({ base, publicLinks: 'hidden', demoAdmin: 'protected', viaCep: 'passed', manualAddress: 'passed', adminCrud: 'passed', errors }));
   } finally { await browser.close(); }
