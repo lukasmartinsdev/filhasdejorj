@@ -7,6 +7,7 @@ Site institucional e projeto acadêmico do grupo Victor, Flávio e Lukas, com Re
 - [Requisitos e roteiro de conferência](docs/REQUISITOS.md)
 - [Como trabalhar em grupo no GitHub](CONTRIBUTING.md)
 - [API e autenticação](docs/API.md)
+- [Assistente virtual e manutenção das respostas](docs/ASSISTENTE.md)
 
 ## Arquitetura
 

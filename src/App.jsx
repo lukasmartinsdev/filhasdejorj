@@ -18,13 +18,14 @@ import { PublicForm } from './components/PublicForms';
 import { Schedule,Guests,Faq } from './components/ExtraSections';
 import { safeUrl,money } from './lib/safe';
 import { previewSponsors } from './registration/sponsors';
+import Assistant from './assistant/Assistant';
 const AccountPage=lazy(()=>import('./registration/AccountPages').then(m=>({default:m.AccountPage})));
 const ReservationsPage=lazy(()=>import('./registration/AccountPages').then(m=>({default:m.ReservationsPage})));
 const Admin=lazy(()=>import('./admin/Admin'));
 const EventPage=lazy(()=>import('./registration/EventPage'));
 const SignupPage=lazy(()=>import('./registration/RegistrationPages').then(m=>({default:m.SignupPage})));
 const TrackingPage=lazy(()=>import('./registration/RegistrationPages').then(m=>({default:m.TrackingPage})));
-export default function App(){const path=location.pathname.replace(/\/$/,'')||'/';const Page=path==='/admin/reservas'?ReservationsPage:path==='/conta'?AccountPage:path.startsWith('/admin')?Admin:path==='/evento'?EventPage:path==='/inscricao'?SignupPage:path==='/acompanhamento'?TrackingPage:PublicSite;return <Suspense fallback={<p className="loading" role="status">Carregando…</p>}><Page/></Suspense>}
+export default function App(){const path=location.pathname.replace(/\/$/,'')||'/';const Page=path==='/admin/reservas'?ReservationsPage:path==='/conta'?AccountPage:path.startsWith('/admin')?Admin:path==='/evento'?EventPage:path==='/inscricao'?SignupPage:path==='/acompanhamento'?TrackingPage:PublicSite;return <><Suspense fallback={<p className="loading" role="status">Carregando…</p>}><Page/></Suspense>{!path.startsWith('/admin')&&<Assistant/>}</>}
 function PublicSite(){
  const historyRoute=/^\/historia\/?$/.test(location.pathname);
  const content=useContent(),site=first(content,'site_settings'),hero=first(content,'hero_content'),about=first(content,'about_content'),history=first(content,'history_content'),contact=first(content,'contact_info'),reg=first(content,'registration_settings'),event=first(content,'event_info');
