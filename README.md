@@ -47,7 +47,7 @@ CPF, contato, endereço, informações de saúde e responsáveis existem apenas 
 
 ## Publicação
 
-A assistente **Ethel** tem integração Gemini no servidor e respostas locais de contingência. A ativação do Gemini depende da configuração Google Cloud/Vertex AI; consulte [ASSISTENTE.md](docs/ASSISTENTE.md). Sem essa configuração, o site avisa que a IA está indisponível.
+A assistente **Ethel** usa IA pela Groq no servidor e respostas locais de contingência. A conta deve permanecer no plano gratuito, sem cartão. A ativação depende da configuração de `GROQ_API_KEY` e `AI_CHAT_ENABLED` na Vercel; consulte [ASSISTENTE.md](docs/ASSISTENTE.md). Sem essa configuração ou ao atingir a cota gratuita, o site responde com sua base revisada e avisa que a IA está indisponível.
 
 O projeto Vercel vinculado é `promoinfo`. Configure `VITE_SUPABASE_URL` e `VITE_SUPABASE_PUBLISHABLE_KEY` em Production e Preview usando os valores públicos de `.env.example`. Na raiz, execute `npx vercel deploy --prod`.
 

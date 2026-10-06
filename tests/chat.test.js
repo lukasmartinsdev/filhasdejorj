@@ -6,7 +6,7 @@ import { buildKnowledge, createChatService, createRateLimiter, validateConversat
 import { defaults } from '../src/data/defaults.js';
 import { socialContact } from '../src/data/socials.js';
 
-const env = { GOOGLE_CLOUD_PROJECT: 'test-project', GOOGLE_CLIENT_EMAIL: 'test@example.invalid', GOOGLE_PRIVATE_KEY: 'test-only', AI_CHAT_ENABLED: 'true', NODE_ENV: 'production' };
+const env = { GROQ_API_KEY: 'test-only', AI_CHAT_ENABLED: 'true', NODE_ENV: 'production' };
 const req = { headers: { origin: 'https://promoinfo.vercel.app' }, socket: { remoteAddress: '127.0.0.1' } };
 const body = question => ({ messages: [{ role: 'user', content: question }] });
 const setup = options => createChatService({ env, loadContent: async () => defaults, warn: () => {}, ...options });
@@ -23,8 +23,9 @@ test('AI sees public reference material and history, never environment or privat
     assert.match(options.system, /DEMONSTRATIVOS/);
     assert.doesNotMatch(options.system, /PRIVATE-DATA|test-only/);
     assert.equal(options.maxRetries, 0);
-    assert.equal(options.maxOutputTokens, 700);
-    assert.equal(options.model.modelId, 'gemini-3.8-flash');
+    assert.equal(options.maxOutputTokens, 1400);
+    assert.equal(options.model.modelId, 'openai/gpt-oss-20b');
+    assert.equal(options.providerOptions.groq.strictJsonSchema, true);
     return { output: { text: 'Confirme os custos de ingresso com o Bethel local.', sourceIds: ['s0', 'untrusted', 's0'] } };
   } });
   const result = await chat(req, { messages: history });

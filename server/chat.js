@@ -1,10 +1,10 @@
 import { createHash } from 'node:crypto';
 import { generateText, jsonSchema, Output } from 'ai';
-import { createVertex } from '@ai-sdk/google-vertex';
+import { createGroq } from '@ai-sdk/groq';
 import { defaults } from '../src/data/defaults.js';
 import { containsPersonalData, initialQuestions, replyToQuestion } from '../src/assistant/knowledge.js';
 
-export const CHAT_MODEL = 'gemini-3.8-flash';
+export const CHAT_MODEL = 'openai/gpt-oss-20b';
 const topicQuestions = ['O que são as Filhas de Jó?', 'Quem fundou as Filhas de Jó?', 'História no Brasil', 'Bethels no Rio', 'Bethel Mater', 'Bethel Susie Holmes', 'O que é um Bethel?', 'Como participar?', 'Qual a idade para participar?', 'Precisa ter parente maçom?', 'As Filhas de Jó são uma religião?', 'De onde vem o nome Filhas de Jó?', 'Nossos valores', 'O que as integrantes fazem?', 'Por que as vestes são brancas?', 'Próximo evento', 'Ver programação', 'Onde será o evento?', 'A inscrição é de verdade?', 'Quanto custa o evento?', 'Quanto custa participar de um Bethel?', 'Quais as formas de pagamento?', 'Hospedagem', 'Acompanhar inscrição', 'Falar com a equipe'];
 export class ChatError extends Error {
   constructor(status, message) { super(message); this.status = status; }
@@ -57,9 +57,8 @@ BASE PÚBLICA:\n${JSON.stringify(knowledge)}`;
 
 export function createChatService({ env = process.env, loadContent = async () => defaults, generate = generateText, now = Date.now, warn = console.warn } = {}) {
   const limit = createRateLimiter(now);
-  const configured = !!(env.GOOGLE_CLOUD_PROJECT && env.GOOGLE_CLIENT_EMAIL && env.GOOGLE_PRIVATE_KEY);
-  // Standard Vertex AI uses Google Cloud terms; AI Studio is not used on this youth-facing site.
-  const google = createVertex({ project: env.GOOGLE_CLOUD_PROJECT, location: env.GOOGLE_CLOUD_LOCATION || 'global', googleAuthOptions: { credentials: { client_email: env.GOOGLE_CLIENT_EMAIL, private_key: env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n') } } });
+  const configured = !!env.GROQ_API_KEY;
+  const groq = createGroq({ apiKey: env.GROQ_API_KEY });
   let content = defaults, expires = 0, loading;
   async function publicContent() {
     if (now() < expires) return content;
@@ -88,11 +87,11 @@ export function createChatService({ env = process.env, loadContent = async () =>
     const knowledge = buildKnowledge(data);
     try {
       const result = await generate({
-        model: google(env.AI_CHAT_MODEL || CHAT_MODEL),
+        model: groq(env.AI_CHAT_MODEL || CHAT_MODEL),
         system: systemPrompt(knowledge), messages,
         output: Output.object({ schema: jsonSchema({ type: 'object', additionalProperties: false, required: ['text', 'sourceIds'], properties: { text: { type: 'string' }, sourceIds: { type: 'array', maxItems: 3, items: { type: 'string', enum: knowledge.sources.map(source => source.id) } } } }) }),
-        maxOutputTokens: 700, maxRetries: 0,
-        providerOptions: { vertex: { thinkingConfig: { thinkingLevel: 'minimal' }, safetySettings: ['HARM_CATEGORY_HATE_SPEECH', 'HARM_CATEGORY_DANGEROUS_CONTENT', 'HARM_CATEGORY_HARASSMENT', 'HARM_CATEGORY_SEXUALLY_EXPLICIT'].map(category => ({ category, threshold: 'BLOCK_LOW_AND_ABOVE' })) } },
+        maxOutputTokens: 1400, maxRetries: 0,
+        providerOptions: { groq: { reasoningEffort: 'low', structuredOutputs: true, strictJsonSchema: true } },
         abortSignal: AbortSignal.any([AbortSignal.timeout(20000), ...(signal ? [signal] : [])]),
       });
       const output = result.output;
@@ -100,6 +99,7 @@ export function createChatService({ env = process.env, loadContent = async () =>
       const sources = [...new Set(output.sourceIds)].map(id => knowledge.sources.find(source => source.id === id)).filter(Boolean).slice(0, 3).map(({ label, href }) => ({ label, href }));
       let text = output.text.trim();
       if (['event', 'schedule', 'venue', 'price', 'registration', 'payment', 'lodging', 'tracking'].includes(topic) && !/demonstrativ|simula[çc][aã]o|fict[ií]ci/i.test(text)) text += '\n\nAs inscrições e os pagamentos do site são demonstrativos: não há cobrança, ingresso ou reserva real.';
+      if (text.length > 2400) throw new Error('invalid_output_length');
       return { text, topic, sources, suggestions: initialQuestions.slice(1, 4), mode: 'ai' };
     } catch (error) {
       if (signal?.aborted) throw error;

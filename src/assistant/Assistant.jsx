@@ -83,7 +83,7 @@ function Conversation({ close, closeRef }) {
       }}/>
       <button type="submit" className="assistant-send" aria-label="Enviar pergunta" disabled={busy || !draft.trim()}><Send size={18}/></button>
     </form>
-    <div className="assistant-footnote"><span>Perguntas podem ser processadas pelo Gemini. Não envie dados pessoais. A IA pode errar; confira as fontes.</span><span aria-label={`${draft.length} de 500 caracteres`}>{draft.length}/500</span></div>
+    <div className="assistant-footnote"><span>Perguntas podem ser processadas pela Groq. Não envie dados pessoais. A IA pode errar; confira as fontes.</span><span aria-label={`${draft.length} de 500 caracteres`}>{draft.length}/500</span></div>
   </>;
 }
 
