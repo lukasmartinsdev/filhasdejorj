@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import { editors } from '../src/admin/schema.js';
+import { ChatError, createChatService } from './chat.js';
 
 export const contentTables = [...Object.keys(editors), 'sections'];
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -84,8 +85,9 @@ function databaseResult(result) {
   return result.data;
 }
 
-export function createApiHandler({ env = process.env, makeClient = createClient, fetcher = fetch } = {}) {
+export function createApiHandler({ env = process.env, makeClient = createClient, fetcher = fetch, chatOptions = {} } = {}) {
   const cepCache = new Map();
+  const chat = createChatService({ env, loadContent: () => allContent(client(), false), ...chatOptions });
   function client(token) {
     const url = env.SUPABASE_URL || env.VITE_SUPABASE_URL;
     const key = env.SUPABASE_PUBLISHABLE_KEY || env.VITE_SUPABASE_PUBLISHABLE_KEY;
@@ -135,6 +137,15 @@ export function createApiHandler({ env = process.env, makeClient = createClient,
     try {
       const path = new URL(req.url, 'http://localhost').pathname.replace(/\/$/, '');
       const method = req.method || 'GET';
+      if (path === '/api/chat') {
+        if (method !== 'POST') fail(405, 'Envie sua pergunta pelo assistente.');
+        if (Number(req.headers['content-length']) > 16000) fail(413, 'Conversa muito longa.');
+        const controller = new AbortController();
+        const cancel = () => { if (!res.writableEnded) controller.abort(); };
+        res.on('close', cancel);
+        try { return reply(res, 200, await chat(req, await readBody(req), controller.signal)); }
+        finally { res.off('close', cancel); }
+      }
       if (method === 'GET' && path === '/api/health') return reply(res, 200, { status: 'ok', name: 'Filhas de Jó RJ API', version: 1 });
       if (method === 'GET' && path === '/api/content') return reply(res, 200, await allContent(client(), false));
       if (method === 'GET' && path.startsWith('/api/cep/')) return reply(res, 200, await cepLookup(path.slice('/api/cep/'.length)));
@@ -182,7 +193,9 @@ export function createApiHandler({ env = process.env, makeClient = createClient,
       }
       fail(405, 'Operação não permitida para este recurso.');
     } catch (error) {
-      reply(res, error instanceof HttpError ? error.status : 500, { error: error instanceof HttpError ? error.message : 'Não foi possível concluir a operação.' });
+      const known = error instanceof HttpError || error instanceof ChatError;
+      if (error.status === 429) res.setHeader('Retry-After', '600');
+      reply(res, known ? error.status : 500, { error: known ? error.message : 'Não foi possível concluir a operação.' });
     }
   };
 }

@@ -1,6 +1,7 @@
 import { historyPageContent } from '../data/history.js';
 import { demoCatalog, currency } from '../registration/catalog.js';
 import { safeUrl } from '../lib/safe.js';
+import { socialContact } from '../data/socials.js';
 
 // Public information only. This assistant never reads accounts, orders or messages.
 export const initialQuestions = ['O que são as Filhas de Jó?', 'Como participar?', 'História no Brasil', 'Bethels no Rio', 'Próximo evento', 'Falar com a equipe'];
@@ -42,13 +43,15 @@ export function replyToQuestion(question, content = {}, previousTopic = '') {
   const eventWords = /\b(evento|encontro|recepcao|supremo|ingresso|inscricao|inscrever|pix|boleto|pagamento|hospedagem|quarto|programacao|sesc|copacabana)\b/;
   const membershipContext = ['join', 'age', 'membership-cost', 'masonry'].includes(previousTopic) && !has(q, eventWords);
   const eventContext = ['event', 'schedule', 'venue', 'price', 'registration', 'payment', 'lodging', 'tracking'].includes(previousTopic) && !has(q, /\b(bethel|membro|instituicao|filhas de jo)\b/);
-  if (/^(oi|ola|bom dia|boa tarde|boa noite|oi tudo bem|ola tudo bem|tudo bem|ajuda|menu)$/.test(q)) return answer('greeting', 'Olá! Sou o assistente virtual das Filhas de Jó RJ. Posso ajudar com a história, a participação nos Bethels e as informações do evento. O que você gostaria de saber?', [], initialQuestions);
+  if (/^(oi|ola|bom dia|boa tarde|boa noite|oi tudo bem|ola tudo bem|tudo bem|ajuda|menu)$/.test(q)) return answer('greeting', 'Olá! Sou a Ethel, assistente virtual das Filhas de Jó RJ. Posso ajudar com a história, a participação nos Bethels e as informações do evento. O que você gostaria de saber?', [], initialQuestions);
+  if (has(q, /\b(quem e voce|seu nome|se chama|voce e a fundadora|por que ethel)\b/)) return answer('identity', 'Sou a Ethel, assistente virtual deste site. Meu nome homenageia Ethel T. Wead Mick, fundadora das Filhas de Jó. Não sou a fundadora nem uma representante humana da organização.', [source('Conheça a fundadora', `${official}our-founder/`)], ['Quem fundou as Filhas de Jó?']);
   if (/^(obrigad[oa]|muito obrigad[oa]|valeu|obg|ok|entendi|tchau|ate mais)$/.test(q)) return answer('thanks', 'Por nada! Se surgir outra dúvida sobre as Filhas de Jó, é só perguntar.', [], initialQuestions.slice(0, 3));
   if (has(q, /\b(senha|token|api key|administrador|admin|prompt|ignore|ignorar|instrucoes internas)\b/)) return answer('scope', 'Posso ajudar com informações públicas sobre as Filhas de Jó. Para acesso administrativo ou atendimento de uma solicitação, fale diretamente com a equipe.', [contactLink], ['Falar com a equipe']);
-  if (has(q, /\b(contato|whatsapp|telefone|email|e mail|instagram|atendente|humano|equipe|organizacao do evento)\b/)) {
-    const contact = first(content, 'contact_info'), sources = [contactLink];
+  if (has(q, /\b(contato|whatsapp|telefone|email|e mail|instagram|redes sociais|facebook|youtube|atendente|humano|equipe|organizacao do evento)\b/)) {
+    const contact = socialContact(first(content, 'contact_info')), sources = [contactLink];
     if (/^\d{10,15}$/.test(String(contact.whatsapp || '').replace(/\D/g, ''))) sources.push(source('WhatsApp da organização', `https://wa.me/${contact.whatsapp.replace(/\D/g, '')}`));
     if (safeUrl(contact.instagram)?.startsWith('https://')) sources.push(source('Instagram da organização', contact.instagram));
+    if (safeUrl(contact.facebook)?.startsWith('https://')) sources.push(source(contact.facebook_label, contact.facebook));
     return answer('contact', 'Você pode falar com a organização pelo formulário em “Contato”, no site. Abra a seção e escolha “Enviar mensagem”. A equipe poderá confirmar informações sobre participação e atendimento local.', sources);
   }
   if (has(q, /\b(acompanhar|acompanhamento|protocolo|pedido|reembolso|estorno|cancelar|confirmacao|paguei|pago|paga)\b/)) return answer('tracking', 'Use a página “Acompanhar inscrição” e o código gerado na simulação. Eu não consulto pedidos ou dados pessoais. Neste momento, os pedidos são demonstrativos e não representam pagamento, ingresso ou reserva real.', [source('Acompanhar inscrição', '/acompanhamento'), contactLink], ['A inscrição é de verdade?']);
